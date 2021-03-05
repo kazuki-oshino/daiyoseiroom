@@ -1,3 +1,4 @@
+import 'package:daiseirei/views/look/look_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -46,7 +47,7 @@ class MyHomePage extends HookWidget {
               height: 15.0,
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => LookScreen(),)),
               child: Text("鑑賞モード"),
               style: textButtonStyle,
             ),
