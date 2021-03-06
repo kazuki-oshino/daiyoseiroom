@@ -1,3 +1,4 @@
+import 'package:daiseirei/views/look/page/look_page.dart';
 import 'package:flutter/material.dart';
 
 class LookScreen extends StatelessWidget {
@@ -11,19 +12,39 @@ class LookScreen extends StatelessWidget {
           bottom: TabBar(
             indicatorColor: Colors.redAccent,
             tabs: [
-              Tab(text: "a",),
-              Tab(text: "b",),
-              Tab(text: "c",),
-              Tab(text: "d",),
+              Tab(
+                text: "シーザ",
+              ),
+              Tab(
+                text: "クチューラ",
+              ),
+              Tab(
+                text: "ミジャー",
+              ),
+              Tab(
+                text: "テーラ",
+              ),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            Image.asset("assets/images/sono1.png"),
-            Image.asset("assets/images/sono2.png"),
-            Image.asset("assets/images/sono3.png"),
-            Image.asset("assets/images/sono4.png"),
+            LookPage(
+              path: "assets/images/sono1.png",
+              name: "シーザ",
+            ),
+            LookPage(
+              path: "assets/images/sono2.png",
+              name: "クチューラ",
+            ),
+            LookPage(
+              path: "assets/images/sono3.png",
+              name: "ミジャー",
+            ),
+            LookPage(
+              path: "assets/images/sono4.png",
+              name: "テーラ",
+            ),
           ],
         ),
       ),
