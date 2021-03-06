@@ -1,6 +1,8 @@
 import 'package:daiseirei/styles.dart';
+import 'package:daiseirei/view_models/controllers/question_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AnswerButton extends HookWidget {
 
@@ -15,7 +17,7 @@ class AnswerButton extends HookWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextButton(
-          onPressed: () => null,
+          onPressed: () => context.read(questionProvider).answer(number, context),
           child: Text(text),
           style: questionButtonStyle,
         ),
