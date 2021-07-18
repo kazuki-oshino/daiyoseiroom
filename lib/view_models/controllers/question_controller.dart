@@ -7,9 +7,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:soundpool/soundpool.dart';
 
 final questionProvider =
-    StateNotifierProvider.autoDispose((ref) => QuestionController(ref.read));
+    StateNotifierProvider.autoDispose<QuestionController>((ref) {
+  ref.maintainState = true;
+  return QuestionController(ref.read);
+});
 
-class QuestionController extends StateNotifier<QuestionState> with LocatorMixin {
+class QuestionController extends StateNotifier<QuestionState>
+    with LocatorMixin {
   QuestionController(this._reader)
       : super(QuestionState(
           correctCount: 0,
@@ -46,16 +50,18 @@ class QuestionController extends StateNotifier<QuestionState> with LocatorMixin 
     );
 
     int soundIdCorrect = await _loadSound("assets/sounds/sound_correct.mp3");
-    int soundIdIncorrect = await _loadSound("assets/sounds/sound_incorrect.mp3");
+    int soundIdIncorrect =
+        await _loadSound("assets/sounds/sound_incorrect.mp3");
     state = state.copyWith(
       soundIdCorrect: soundIdCorrect,
       soundIdIncorrect: soundIdIncorrect,
     );
-
   }
 
   Future<int> _loadSound(String soundPath) async {
-    return rootBundle.load(soundPath).then((value) => state.soundPool.load(value));
+    Future<int> id =
+        rootBundle.load(soundPath).then((value) => state.soundPool.load(value));
+    return id;
   }
 
   Future<void> answer(int number, BuildContext context) async {
@@ -67,7 +73,6 @@ class QuestionController extends StateNotifier<QuestionState> with LocatorMixin 
         resultPath: "assets/images/pic_correct.png",
         status: QuestionStatus.WAIT,
       );
-
     } else {
       state.soundPool.play(state.soundIdIncorrect);
       state = state.copyWith(
@@ -84,7 +89,7 @@ class QuestionController extends StateNotifier<QuestionState> with LocatorMixin 
       var resultComment = "";
       switch (state.correctCount) {
         case 0:
-          resultComment = "うんこね〜💩";
+          resultComment = "だめね〜";
           break;
         case 1:
           resultComment = "雑魚ね〜";
@@ -99,14 +104,19 @@ class QuestionController extends StateNotifier<QuestionState> with LocatorMixin 
           resultComment = "どんだけ〜！";
           break;
         default:
-          resultComment = "うんこね〜💩";
+          resultComment = "💩";
       }
       state = state.copyWith(resultComment: resultComment);
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ScoreScreen(),));
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ScoreScreen(),
+          ));
     } else {
       state = state.copyWith(
         questionNumber: state.questionNumber + 1,
-        currentQuestion: questionList[state.questionOrder[state.questionNumber]],
+        currentQuestion:
+            questionList[state.questionOrder[state.questionNumber]],
         status: QuestionStatus.ANSWER,
       );
     }
@@ -114,8 +124,8 @@ class QuestionController extends StateNotifier<QuestionState> with LocatorMixin 
 
   @override
   void dispose() {
-    state.soundPool.release();
     super.dispose();
+    state.soundPool.release();
   }
 
   final Reader _reader;
