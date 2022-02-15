@@ -2,8 +2,7 @@
 
 Flutter製のネタアプリです。
 
-## Getting Started
+## about
 
-iOS/Androidで起動確認済みです。  
 某キャラクターを覚えるためだけのアプリです。  
 クイズモードと学習モードがあります。  
